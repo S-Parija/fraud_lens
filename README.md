@@ -2,6 +2,10 @@
 
 Bank transaction screening with HTML, CSS, JavaScript, and FastAPI. Trained on synthetic transaction data.
 
+Try the [live website](https://fraud-lens-yg7q.onrender.com).
+
+The first load may take a little longer because the website runs on Render's free tier.
+
 ## Setup
 
 Requires Python 3.12.
