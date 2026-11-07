@@ -1,5 +1,6 @@
 :root { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #253b35; background: #f5f7f5; font-synthesis: none; line-height: 1.5; }
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 body { margin: 0; }
 button, input, select { font: inherit; }
 a { color: inherit; }
@@ -45,7 +46,7 @@ h3 { font-size: 14px; font-weight: 600; margin: 0; }
 .primary-button:hover:not(:disabled) { background: #1d5045; }
 .result-panel { padding: 26px; }
 .empty-result { min-height: 295px; display: flex; align-items: center; justify-content: center; flex-direction: column; text-align: center; }
-.result-icon { width: 44px; height: 44px; display: grid; place-items: center; font-size: 23px; border: 1px solid #dae6d8; color: #729675; background: #f0f5ec; border-radius: 50%; margin-bottom: 20px; }
+.result-icon { width: 44px; height: 44px; display: grid; place-items: center; font-size: 23px; border: 1px solid #dae6d8; color: #729675; background: #f0f5ec; border-radius: 50%; margin: 0 auto 20px; }
 .empty-result h2 { font-size: 17px; }
 .empty-result p { font-size: 13px; line-height: 1.8; color: #81907a; margin: 10px 0 0; max-width: 245px; }
 .empty-result strong { font-weight: 500; color: #5d7656; }

@@ -1,14 +1,146 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#256356" />
-    <meta name="description" content="Check a transaction, see its estimated fraud risk, and find out whether it needs a closer look." />
-    <title>FraudLens · Check a transaction</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#256356">
+  <meta name="description" content="Check a transaction and see whether it needs a closer look.">
+  <title>FraudLens | Check a transaction</title>
+  <link rel="stylesheet" href="/static/styles.css">
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="/" aria-label="FraudLens home"><span class="brand-symbol" aria-hidden="true">&#10003;</span>FraudLens</a>
+      <span class="service-status"><span id="status-dot" class="status-dot" aria-hidden="true"></span><span id="service-status">Connecting...</span></span>
+    </div>
+  </header>
+  <main>
+    <section class="intro">
+      <h1>Check a transaction</h1>
+      <p>Enter the payment details to see whether it needs a closer look.</p>
+    </section>
+    <noscript><p class="error-banner">Enable JavaScript in your browser to check transactions.</p></noscript>
+    <p id="loading-message" class="loading-message" role="status">Getting the workspace ready...</p>
+    <div class="workspace">
+      <section class="input-panel" aria-labelledby="payment-heading">
+        <div class="panel-intro"><h2 id="payment-heading">Payment details</h2><p>Start with an example, then change what you need.</p></div>
+        <form id="transaction-form">
+          <fieldset id="transaction-fields" class="all-fields" disabled>
+            <div class="sample-picker">
+              <label for="example-transaction">Example transaction</label>
+              <select id="example-transaction"><option value="">Loading examples...</option></select>
+            </div>
+            <div class="payment-fields fields-grid">
+              <div class="field">
+                <label for="amount">Amount (USD)</label>
+                <input id="amount" name="amount" type="number" min="0" step="0.01" required>
+              </div>
+              <div class="field">
+                <label for="timestamp">Date &amp; time</label>
+                <input id="timestamp" name="timestamp" type="datetime-local" step="1" aria-describedby="timestamp-help" required>
+                <span id="timestamp-help" class="field-help">Your local time</span>
+              </div>
+              <div class="field">
+                <label for="merchant_category">Type of business</label>
+                <select id="merchant_category" name="merchant_category" required></select>
+              </div>
+              <div class="field">
+                <label for="merchant_country">Merchant country</label>
+                <select id="merchant_country" name="merchant_country" required></select>
+              </div>
+              <div class="field">
+                <label for="device_type">Payment method</label>
+                <select id="device_type" name="device_type" required></select>
+              </div>
+              <div class="field">
+                <label for="card_present">Physical card used?</label>
+                <select id="card_present" name="card_present" required><option value="1">Yes</option><option value="0">No</option></select>
+              </div>
+            </div>
+            <details id="account-details" class="context-details">
+              <summary>Account &amp; security details <span class="optional-label">Optional to edit</span></summary>
+              <p class="context-note">Already filled from the selected example's account history. Update only if needed.</p>
+              <section class="context-group">
+                <h3>Security checks</h3>
+                <div class="fields-grid">
+                  <div class="field">
+                    <label for="ip_risk_score">Connection risk (0-100)</label>
+                    <input id="ip_risk_score" name="ip_risk_score" type="number" min="0" max="100" step="0.1" aria-describedby="ip-risk-help" required>
+                    <span id="ip-risk-help" class="field-help">Higher numbers mean a less trusted connection.</span>
+                  </div>
+                  <div class="field">
+                    <label for="device_known">Device used before?</label>
+                    <select id="device_known" name="device_known" required><option value="1">Yes</option><option value="0">No</option></select>
+                  </div>
+                  <div class="field">
+                    <label for="has_2fa">Extra verification enabled?</label>
+                    <select id="has_2fa" name="has_2fa" required><option value="1">Yes</option><option value="0">No</option></select>
+                  </div>
+                  <div class="field">
+                    <label for="is_foreign_txn">International payment?</label>
+                    <select id="is_foreign_txn" name="is_foreign_txn" required><option value="1">Yes</option><option value="0">No</option></select>
+                  </div>
+                </div>
+              </section>
+              <section class="context-group">
+                <h3>Account activity</h3>
+                <div class="fields-grid">
+                  <div class="field">
+                    <label for="velocity_1h">Payments in the last hour</label>
+                    <input id="velocity_1h" name="velocity_1h" type="number" min="0" step="1" required>
+                  </div>
+                  <div class="field">
+                    <label for="time_since_last_s">Seconds since previous payment</label>
+                    <input id="time_since_last_s" name="time_since_last_s" type="number" min="0" step="any" required>
+                  </div>
+                  <div class="field">
+                    <label for="amount_vs_avg_ratio">Compared with usual spending</label>
+                    <input id="amount_vs_avg_ratio" name="amount_vs_avg_ratio" type="number" min="0" step="any" aria-describedby="spending-help" required>
+                    <span id="spending-help" class="field-help">1 = usual amount; 3 = three times the usual amount.</span>
+                  </div>
+                  <div class="field">
+                    <label for="account_age_days">Account age (days)</label>
+                    <input id="account_age_days" name="account_age_days" type="number" min="0" step="any" required>
+                  </div>
+                </div>
+              </section>
+            </details>
+          </fieldset>
+          <div class="submit-area">
+            <div id="error-banner" class="error-banner" role="alert" hidden>
+              <p id="error-message"></p>
+              <button id="retry-button" type="button" hidden>Try again</button>
+            </div>
+            <button id="check-button" class="primary-button" type="submit" disabled><span id="check-label">Check transaction</span><span aria-hidden="true">&#8594;</span></button>
+            <span id="live-status" class="sr-only" role="status" aria-live="polite"></span>
+          </div>
+        </form>
+      </section>
+      <aside id="result-panel" class="result-panel empty-result" aria-label="Transaction result" aria-busy="false">
+        <div id="empty-result">
+          <span class="result-icon" aria-hidden="true">&#10003;</span>
+          <h2>Your result will appear here</h2>
+          <p>Review the payment details, then select <strong>Check transaction</strong>.</p>
+        </div>
+        <div id="assessment" hidden>
+          <div class="result-heading"><h2 id="result-heading" tabindex="-1">Check result</h2><span id="risk-badge" class="risk-badge"></span></div>
+          <p id="stale-notice" class="stale-notice" role="status" hidden>Details changed. Check the transaction again for an updated result.</p>
+          <p class="score-label">Estimated chance of fraud</p>
+          <div id="fraud-probability" class="probability"></div>
+          <div id="probability-meter" class="probability-track" role="meter" aria-label="Chance of fraud" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="probability-fill"></span></div>
+          <section class="next-step"><h3 id="next-step-title"></h3><p id="next-step-action"></p></section>
+          <details id="check-details" class="check-details">
+            <summary>Why this result?</summary>
+            <ul id="check-list"></ul>
+            <p class="field-help">Factors that raised or lowered concern for this payment.</p>
+          </details>
+          <p class="result-footnote">An estimate to support your review, not a confirmation of fraud.</p>
+        </div>
+      </aside>
+    </div>
+  </main>
+  <footer><span>Demo workspace &middot; Example account data &middot; No bank account connected</span></footer>
+</body>
 </html>

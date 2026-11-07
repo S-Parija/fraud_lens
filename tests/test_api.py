@@ -1,12 +1,14 @@
 """Integration checks against the real supplied models, not mocked scores."""
 
 import json
+from html.parser import HTMLParser
 
 from fastapi.testclient import TestClient
 import pytest
 
 from backend.app import app
 from backend.service import PROJECT_ROOT
+from backend.schemas import Transaction
 
 
 @pytest.fixture(scope="module")
@@ -110,3 +112,61 @@ def test_timezone_offsets_are_equivalent(client, transaction):
 def test_model_files_are_not_served(client):
     assert client.get("/fraud_banking_explainable_v3.pkl").status_code == 404
     assert client.get("/fraud_banking_explainable_v3.joblib").status_code == 404
+
+
+class FormParser(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.fields = {}
+        self.labels = set()
+        self.scripts = []
+        self.stylesheets = []
+        self.context_open = None
+
+    def handle_starttag(self, tag, attrs):
+        attrs = dict(attrs)
+        if tag in {"input", "select"} and attrs.get("name"):
+            self.fields[attrs["name"]] = attrs
+        if tag == "label":
+            self.labels.add(attrs.get("for"))
+        if tag == "script":
+            self.scripts.append(attrs.get("src"))
+        if tag == "link" and attrs.get("rel") == "stylesheet":
+            self.stylesheets.append(attrs.get("href"))
+        if tag == "details" and attrs.get("id") == "account-details":
+            self.context_open = "open" in attrs
+
+
+def test_page_and_assets_are_served_without_a_build(client):
+    response = client.get("/")
+    assert response.status_code == 200
+    assert response.headers["content-type"].startswith("text/html")
+    page = FormParser()
+    page.feed(response.text)
+    assert page.scripts == ["/static/app.js"]
+    assert page.stylesheets == ["/static/styles.css"]
+    for path in page.scripts + page.stylesheets:
+        asset = client.get(path)
+        assert asset.status_code == 200
+        assert len(asset.content) > 100
+
+
+def test_html_form_matches_the_required_api_inputs(client):
+    page = FormParser()
+    page.feed(client.get("/").text)
+    assert set(page.fields) == set(Transaction.model_fields)
+    assert page.context_open is False
+    for name, attrs in page.fields.items():
+        assert "required" in attrs
+        assert attrs["id"] in page.labels
+        if attrs.get("type") == "number":
+            assert attrs["min"] == "0"
+    assert page.fields["ip_risk_score"]["max"] == "100"
+    assert page.fields["velocity_1h"]["step"] == "1"
+
+
+def test_static_routes_do_not_expose_project_files(client):
+    assert client.get("/static/requirements.txt").status_code == 404
+    assert client.get("/static/fraud_banking_explainable_v3.pkl").status_code == 404
+    assert client.get("/static/package.json").status_code == 404
+    assert client.get("/assets/missing.js").status_code == 404

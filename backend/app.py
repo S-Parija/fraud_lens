@@ -1,10 +1,9 @@
-"""HTTP routes and optional serving of the built React frontend."""
+"""Transaction API and static frontend."""
 
 from contextlib import asynccontextmanager
 import logging
 
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
@@ -29,12 +28,6 @@ app = FastAPI(
     description="Bank transaction risk assessment.",
     version="1.0.0",
     lifespan=lifespan,
-)
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
-    allow_methods=["GET", "POST"],
-    allow_headers=["Content-Type"],
 )
 
 
@@ -62,15 +55,11 @@ def predict(transaction: Transaction, request: Request) -> dict:
         raise HTTPException(status_code=500, detail="Prediction failed. Check the backend terminal for details.") from exc
 
 
-# Serve only the frontend build, never the repository or the private model files.
-FRONTEND_DIST = PROJECT_ROOT / "frontend" / "dist"
-if (FRONTEND_DIST / "assets").is_dir():
-    app.mount("/assets", StaticFiles(directory=FRONTEND_DIST / "assets"), name="assets")
+FRONTEND_DIR = PROJECT_ROOT / "frontend"
+app.mount("/static", StaticFiles(directory=FRONTEND_DIR / "static"), name="static")
 
 
 @app.get("/", include_in_schema=False)
 def index():
-    """Show the built React app, or a useful setup message before its first build."""
-    if (FRONTEND_DIST / "index.html").is_file():
-        return FileResponse(FRONTEND_DIST / "index.html")
-    return {"message": "API is running. Start React on port 5173, or build frontend/ first.", "docs": "/docs"}
+    """Serve the transaction form."""
+    return FileResponse(FRONTEND_DIR / "index.html")

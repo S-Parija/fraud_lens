@@ -4,7 +4,7 @@ import uvicorn
 
 
 def main():
-    """Start the local API (and the frontend if it has been built)."""
+    """Serve the transaction form and prediction API."""
     uvicorn.run("backend.app:app", host="127.0.0.1", port=8000)
 
 

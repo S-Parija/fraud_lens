@@ -1,10 +1,10 @@
 # FraudLens
 
-Banking transaction risk assessment with React, FastAPI, and XGBoost. Trained on synthetic transaction data.
+Bank transaction screening with HTML, CSS, JavaScript, and FastAPI. Trained on synthetic transaction data.
 
 ## Setup
 
-Requires Python 3.12 and Node.js 22.12 or later.
+Requires Python 3.12.
 
 ```bash
 git clone https://github.com/S-Parija/fraud_lens.git
@@ -17,40 +17,32 @@ Activate the environment:
 - Linux/macOS: `source .venv/bin/activate`
 - Windows Command Prompt: `.venv\Scripts\activate.bat`
 
-Install dependencies, build the frontend, and start the app:
-
 ```bash
 python -m pip install -r requirements.txt
-cd frontend
-npm ci
-npm run build
-cd ..
 python main.py
 ```
 
-Open http://127.0.0.1:8000.
+Open http://127.0.0.1:8000. The server serves both the page and prediction API.
 
 ## Development
-
-Run the backend:
 
 ```bash
 python -m uvicorn backend.app:app --reload
 ```
 
-In a separate terminal:
-
-```bash
-cd frontend
-npm run dev
-```
-
-Open http://127.0.0.1:5173. API docs: http://127.0.0.1:8000/docs.
+The frontend files are `frontend/index.html`, `frontend/static/styles.css`, and `frontend/static/app.js`. Edit them and refresh the browser.
 
 ## Tests
 
 ```bash
 python -m pytest -q
-cd frontend
-npm test
 ```
+
+## Render
+
+- Root Directory: leave empty
+- Build Command: `pip install -r requirements.txt`
+- Start Command: `python -m uvicorn backend.app:app --host 0.0.0.0 --port $PORT`
+- Health Check Path: `/api/health`
+
+The repository specifies Python 3.12 in `.python-version`.

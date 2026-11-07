@@ -1,7 +1,7 @@
 [project]
 name = "bank-transaction"
 version = "0.1.0"
-description = "A simple React and FastAPI demo for explainable banking fraud detection"
+description = "Bank transaction screening with FastAPI and an HTML, CSS, and JavaScript interface"
 readme = "README.md"
 requires-python = ">=3.12,<3.13"
 dependencies = [
