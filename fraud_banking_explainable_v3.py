@@ -358,8 +358,7 @@ def predict_api(bundle, record, *, strict=True, explain=True, top=5):
                                               else "Uncertain subtype: multiple categories plausible")
             item["subtype_confidence_heuristic_passed"] = confident
             item["subtype_probability_margin"] = margin
-            item["subtype_uncertainty_note"] = ("This is a heuristic ranking, not a validated medical/security certainty. "
-                                                "Do not treat the subtype as a confirmed fraud classification.")
+            item["subtype_uncertainty_note"] = "Subtype rankings are estimates, not confirmed fraud classifications."
         if explain:
             details = explanation_details(bundle, data.iloc[[i]], top=top)
             item["explanation"] = details

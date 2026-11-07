@@ -1,4 +1,4 @@
-"""Run with `uv run python main.py` from the project directory."""
+"""Start the application with `python main.py`."""
 
 import uvicorn
 

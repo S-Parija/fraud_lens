@@ -58,7 +58,7 @@ def test_samples_return_different_real_scores(client):
     assert predictions[-1]["risk_level"] == "High"
 
 
-def test_recovered_binary_model_matches_native_export_on_all_samples(client):
+def test_binary_model_matches_native_export_on_all_samples(client):
     import numpy as np
     import pandas as pd
     from xgboost import Booster, DMatrix

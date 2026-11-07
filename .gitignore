@@ -1,4 +1,4 @@
-# Python-generated files
+# Python
 __pycache__/
 *.py[oc]
 build/
@@ -19,7 +19,7 @@ node_modules/
 .env.local
 !.env.example
 
-# Personal notes, training data, and unused exports stay on this machine.
+# Local data and notes
 /docs/
 /HOW_TO_USE_WITH_BACKEND.txt
 /dataset/
@@ -30,6 +30,4 @@ node_modules/
 # Local editor and tool settings
 /.vscode/
 /.idea/
-/.agents/
-/.codex/
 /.aws/

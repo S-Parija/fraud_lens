@@ -50,7 +50,7 @@
   "fraud_subtype_status": "Uncertain subtype: multiple categories plausible",
   "subtype_confidence_heuristic_passed": false,
   "subtype_probability_margin": 0.2479490347160145,
-  "subtype_uncertainty_note": "This is a heuristic ranking, not a validated medical/security certainty. Do not treat the subtype as a confirmed fraud classification.",
+  "subtype_uncertainty_note": "Subtype rankings are estimates, not confirmed fraud classifications.",
   "explanation": {
     "explanation_method": "XGBoost TreeSHAP log-odds",
     "calibrated_baseline_logodds": -4.448427786620055,

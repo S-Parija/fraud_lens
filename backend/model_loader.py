@@ -1,10 +1,4 @@
-"""Compatibility loader for this notebook's trusted XGBoost pickle exports.
-
-The Kaggle memory snapshots cannot be restored directly by this Windows build.
-Each snapshot also contains a complete native UBJSON Model object. Load that
-inference model instead of restoring the training-time Config/memory state.
-The saved preprocessor, calibration, and thresholds are retained unchanged.
-"""
+"""Load native XGBoost models from the saved pipeline bundle."""
 
 import pickle
 from pathlib import Path
@@ -27,10 +21,7 @@ class InferenceBooster(Booster):
 
 
 class TrustedModelUnpickler(pickle.Unpickler):
-    """Use the inference loader for Booster objects in this local trusted pickle.
-
-    This is a compatibility adapter, not a sandbox for untrusted pickle files.
-    """
+    """Restore Booster objects using their native model data."""
 
     def find_class(self, module, name):
         if module == "xgboost.core" and name == "Booster":

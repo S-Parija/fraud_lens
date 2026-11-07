@@ -9,7 +9,7 @@ Binary = Literal[0, 1]
 
 
 class Transaction(BaseModel):
-    """Validate the same 14 inputs used by the trained notebook model."""
+    """Required transaction inputs."""
 
     model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
 
@@ -35,5 +35,5 @@ class Transaction(BaseModel):
         return value.upper()
 
     def to_record(self) -> dict:
-        """Convert the validated date to JSON text for the notebook's predictor."""
+        """Return JSON-compatible values for inference."""
         return self.model_dump(mode="json")

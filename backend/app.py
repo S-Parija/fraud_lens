@@ -26,7 +26,7 @@ async def lifespan(application: FastAPI):
 
 app = FastAPI(
     title="FraudLens API",
-    description="Explainable banking fraud predictions for a synthetic-data portfolio project.",
+    description="Bank transaction risk assessment.",
     version="1.0.0",
     lifespan=lifespan,
 )

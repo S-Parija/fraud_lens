@@ -1,52 +1,56 @@
 # FraudLens
 
-Transaction checking app built with React and FastAPI. Includes the trained model and sample transactions. Uses synthetic data for demonstration.
+Banking transaction risk assessment with React, FastAPI, and XGBoost. Trained on synthetic transaction data.
 
-## Requirements
+## Setup
 
-- Python 3.12 and [UV](https://docs.astral.sh/uv/)
-- Node.js 22.12 or later
-
-## Run
+Requires Python 3.12 and Node.js 22.12 or later.
 
 ```bash
 git clone https://github.com/S-Parija/fraud_lens.git
 cd fraud_lens
-uv sync --locked
+python -m venv .venv
+```
+
+Activate the environment:
+
+- Linux/macOS: `source .venv/bin/activate`
+- Windows Command Prompt: `.venv\Scripts\activate.bat`
+
+Install dependencies, build the frontend, and start the app:
+
+```bash
+python -m pip install -r requirements.txt
 cd frontend
 npm ci
 npm run build
 cd ..
-uv run python main.py
+python main.py
 ```
 
-Open http://127.0.0.1:8000. Stop with Ctrl+C.
-
-On Windows, `./run.ps1` also installs dependencies, builds the frontend, and starts the app. It can set up portable Node.js if needed.
+Open http://127.0.0.1:8000.
 
 ## Development
 
-Start the backend from the repository root:
+Run the backend:
 
 ```bash
-uv run uvicorn backend.app:app --reload --host 127.0.0.1 --port 8000
+python -m uvicorn backend.app:app --reload
 ```
 
-In a second terminal:
+In a separate terminal:
 
 ```bash
 cd frontend
 npm run dev
 ```
 
-Open http://127.0.0.1:5173. API documentation is available at http://127.0.0.1:8000/docs.
+Open http://127.0.0.1:5173. API docs: http://127.0.0.1:8000/docs.
 
 ## Tests
 
 ```bash
-uv run pytest -q
+python -m pytest -q
 cd frontend
 npm test
 ```
-
-The saved `.pkl` file is required at runtime. The native binary-model JSON and example prediction JSON are used by the tests. Load only trusted model files.
