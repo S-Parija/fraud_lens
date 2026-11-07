@@ -1,0 +1,16 @@
+{
+  "timestamp": "2024-09-12T08:48:38+00:00",
+  "amount": 1195.62,
+  "merchant_category": "travel",
+  "merchant_country": "US",
+  "card_present": 1.0,
+  "device_type": "pos_terminal",
+  "device_known": 1.0,
+  "ip_risk_score": 0.1,
+  "is_foreign_txn": 0.0,
+  "time_since_last_s": 101.0,
+  "velocity_1h": 0.0,
+  "amount_vs_avg_ratio": 37.2351,
+  "account_age_days": 3371.0,
+  "has_2fa": 1.0
+}

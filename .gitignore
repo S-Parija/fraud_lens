@@ -1,0 +1,35 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Local dependencies, builds, and caches
+node_modules/
+.tools/
+.cache/
+.pytest_cache/
+*.log
+.env
+.env.local
+!.env.example
+
+# Personal notes, training data, and unused exports stay on this machine.
+/docs/
+/HOW_TO_USE_WITH_BACKEND.txt
+/dataset/
+/*.ipynb
+/fraud_banking_explainable_v3.joblib
+/binary_xgboost_booster.ubj
+
+# Local editor and tool settings
+/.vscode/
+/.idea/
+/.agents/
+/.codex/
+/.aws/

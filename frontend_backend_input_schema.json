@@ -1,0 +1,107 @@
+{
+  "schema_version": "banking_fraud_form_v3",
+  "timezone_policy": "Send timezone-aware ISO 8601 timestamp (example: 2024-09-20T13:05:00Z).",
+  "fields": [
+    {
+      "name": "timestamp",
+      "type": "datetime",
+      "source": "form_or_bank",
+      "required": true
+    },
+    {
+      "name": "amount",
+      "type": "number",
+      "unit": "USD",
+      "source": "form",
+      "min": 0,
+      "required": true
+    },
+    {
+      "name": "merchant_category",
+      "type": "string",
+      "source": "form_or_bank",
+      "required": true
+    },
+    {
+      "name": "merchant_country",
+      "type": "ISO_country_code",
+      "source": "bank",
+      "required": true
+    },
+    {
+      "name": "card_present",
+      "type": "binary",
+      "source": "bank",
+      "required": true
+    },
+    {
+      "name": "device_type",
+      "type": "string",
+      "source": "form_or_bank",
+      "required": true
+    },
+    {
+      "name": "device_known",
+      "type": "binary",
+      "source": "security_service",
+      "required": true
+    },
+    {
+      "name": "ip_risk_score",
+      "type": "number",
+      "min": 0,
+      "max": 100,
+      "source": "security_service",
+      "required": true
+    },
+    {
+      "name": "is_foreign_txn",
+      "type": "binary",
+      "source": "bank",
+      "required": true
+    },
+    {
+      "name": "time_since_last_s",
+      "type": "number",
+      "min": 0,
+      "source": "transaction_history",
+      "required": true
+    },
+    {
+      "name": "velocity_1h",
+      "type": "integer",
+      "min": 0,
+      "source": "transaction_history",
+      "required": true
+    },
+    {
+      "name": "amount_vs_avg_ratio",
+      "type": "number",
+      "min": 0,
+      "source": "transaction_history",
+      "required": true
+    },
+    {
+      "name": "account_age_days",
+      "type": "number",
+      "min": 0,
+      "source": "account_system",
+      "required": true
+    },
+    {
+      "name": "has_2fa",
+      "type": "binary",
+      "source": "security_service",
+      "required": true
+    }
+  ],
+  "response": {
+    "fraud_probability": "float 0..1",
+    "legitimate_probability": "float 0..1",
+    "risk_level": "Low / Review / High / Incomplete input",
+    "fraud_type_probabilities_given_fraud": "class->conditional probability",
+    "overall_probabilities_by_fraud_type": "class->joint probability",
+    "explanation": "directional grouped TreeSHAP log-odds"
+  },
+  "instructions": "Do not ask staff to guess historical or security signals. Populate them from trusted backend systems."
+}

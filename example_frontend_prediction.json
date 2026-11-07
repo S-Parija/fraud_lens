@@ -1,0 +1,228 @@
+{
+  "fraud_probability": 3.796293217812169e-05,
+  "legitimate_probability": 0.9999620370678218,
+  "fraud_probability_percent": 0.0038,
+  "risk_level": "Low",
+  "model_alert": false,
+  "recommended_action": "No model-triggered intervention",
+  "input_complete": true,
+  "missing_inputs": [],
+  "safe_for_automatic_decision": false,
+  "synthetic_data_notice": "Demonstration model trained on generated fraud, not approved for autonomous bank decisions",
+  "fraud_type_probabilities_given_fraud": {
+    "account_takeover": 0.22803445557948585,
+    "atm_fraud": 0.047180763475847105,
+    "card_not_present": 0.47598349029550036,
+    "card_present_stolen": 0.16607083001182918,
+    "friendly_fraud": 0.05426778561258971,
+    "identity_theft": 0.02533959825964174,
+    "money_laundering": 0.003123076765106279
+  },
+  "overall_probabilities_by_fraud_type": {
+    "account_takeover": 8.656856571438924e-06,
+    "atm_fraud": 1.7911201239455845e-06,
+    "card_not_present": 1.8069728959993723e-05,
+    "card_present_stolen": 6.304535656503447e-06,
+    "friendly_fraud": 2.060164264667591e-06,
+    "identity_theft": 9.619654501516298e-07,
+    "money_laundering": 1.1856115142079734e-07
+  },
+  "most_likely_type_if_fraud": "card_not_present",
+  "type_probability_given_fraud": 0.47598349029550036,
+  "joint_probability_of_most_likely_type": 1.8069728959993723e-05,
+  "top_three_fraud_types": [
+    {
+      "fraud_type": "card_not_present",
+      "probability_given_fraud": 0.47598349029550036,
+      "overall_transaction_probability": 1.8069728959993723e-05
+    },
+    {
+      "fraud_type": "account_takeover",
+      "probability_given_fraud": 0.22803445557948585,
+      "overall_transaction_probability": 8.656856571438924e-06
+    },
+    {
+      "fraud_type": "card_present_stolen",
+      "probability_given_fraud": 0.16607083001182918,
+      "overall_transaction_probability": 6.304535656503447e-06
+    }
+  ],
+  "fraud_subtype_status": "Uncertain subtype: multiple categories plausible",
+  "subtype_confidence_heuristic_passed": false,
+  "subtype_probability_margin": 0.2479490347160145,
+  "subtype_uncertainty_note": "This is a heuristic ranking, not a validated medical/security certainty. Do not treat the subtype as a confirmed fraud classification.",
+  "explanation": {
+    "explanation_method": "XGBoost TreeSHAP log-odds",
+    "calibrated_baseline_logodds": -4.448427786620055,
+    "reconstructed_fraud_probability": 3.796288729063235e-05,
+    "risk_increasing_characteristics": [
+      {
+        "characteristic_group": "Amount and deviation",
+        "calibrated_logodds_effect": 1.2705609280092176,
+        "encoded_evidence": [
+          {
+            "feature": "num__amount",
+            "logodds_effect": 1.011494517326355
+          },
+          {
+            "feature": "num__amount_vs_avg_ratio",
+            "logodds_effect": 0.12513631582260132
+          },
+          {
+            "feature": "num__log_amount",
+            "logodds_effect": 0.09534934163093567
+          }
+        ],
+        "observed_values": {
+          "amount": 1195.62,
+          "log_amount": 7.087256194839319,
+          "amount_vs_avg_ratio": 37.2351,
+          "log_amount_ratio": 3.6437539418975025
+        }
+      },
+      {
+        "characteristic_group": "Merchant geography",
+        "calibrated_logodds_effect": 0.08097934874240309,
+        "encoded_evidence": [
+          {
+            "feature": "num__is_foreign_txn",
+            "logodds_effect": 0.0659865066409111
+          },
+          {
+            "feature": "cat__merchant_country_US",
+            "logodds_effect": 0.013139136135578156
+          },
+          {
+            "feature": "cat__is_foreign_level_No",
+            "logodds_effect": 0.0018537059659138322
+          }
+        ],
+        "observed_values": {
+          "merchant_country": "US",
+          "is_foreign_txn": 0.0,
+          "is_foreign_level": "No"
+        }
+      }
+    ],
+    "risk_decreasing_characteristics": [
+      {
+        "characteristic_group": "IP risk",
+        "calibrated_logodds_effect": -4.837403537239879,
+        "encoded_evidence": [
+          {
+            "feature": "num__ip_risk_score",
+            "logodds_effect": -4.450644016265869
+          },
+          {
+            "feature": "cat__ip_band_<=25",
+            "logodds_effect": -0.39324066042900085
+          },
+          {
+            "feature": "cat__ip_band_25-50",
+            "logodds_effect": 0.020806264132261276
+          }
+        ],
+        "observed_values": {
+          "ip_risk_score": 0.1,
+          "high_ip_risk": 0.0,
+          "ip_band": "<=25"
+        }
+      },
+      {
+        "characteristic_group": "Velocity",
+        "calibrated_logodds_effect": -1.2926883303443901,
+        "encoded_evidence": [
+          {
+            "feature": "num__velocity_1h",
+            "logodds_effect": -0.9980055093765259
+          },
+          {
+            "feature": "cat__velocity_band_0",
+            "logodds_effect": -0.20801259577274323
+          },
+          {
+            "feature": "num__high_velocity",
+            "logodds_effect": -0.056430377066135406
+          }
+        ],
+        "observed_values": {
+          "time_since_last_s": 101.0,
+          "log_time_since_last_s": 4.624972813284271,
+          "velocity_1h": 0.0,
+          "high_velocity": 0.0
+        }
+      },
+      {
+        "characteristic_group": "Merchant category",
+        "calibrated_logodds_effect": -0.374184258555033,
+        "encoded_evidence": [
+          {
+            "feature": "cat__merchant_category_travel",
+            "logodds_effect": -0.20764218270778656
+          },
+          {
+            "feature": "cat__merchant_category_grocery",
+            "logodds_effect": -0.0943952426314354
+          },
+          {
+            "feature": "cat__merchant_category_restaurant",
+            "logodds_effect": -0.06714516133069992
+          }
+        ],
+        "observed_values": {
+          "merchant_category": "travel"
+        }
+      },
+      {
+        "characteristic_group": "Device",
+        "calibrated_logodds_effect": -0.32851687786751427,
+        "encoded_evidence": [
+          {
+            "feature": "num__device_known",
+            "logodds_effect": -0.24127419292926788
+          },
+          {
+            "feature": "num__unknown_device",
+            "logodds_effect": -0.06120336800813675
+          },
+          {
+            "feature": "cat__device_type_pos_terminal",
+            "logodds_effect": -0.012576927430927753
+          }
+        ],
+        "observed_values": {
+          "device_type": "pos_terminal",
+          "device_known": 1.0,
+          "unknown_device": 0.0,
+          "device_known_level": "Yes"
+        }
+      },
+      {
+        "characteristic_group": "Time",
+        "calibrated_logodds_effect": -0.1530700393486768,
+        "encoded_evidence": [
+          {
+            "feature": "num__hour_cos",
+            "logodds_effect": -0.0976933017373085
+          },
+          {
+            "feature": "num__hour",
+            "logodds_effect": -0.06488313525915146
+          },
+          {
+            "feature": "num__hour_sin",
+            "logodds_effect": 0.0235610194504261
+          }
+        ],
+        "observed_values": {
+          "hour": 8.0,
+          "weekday": 3.0,
+          "month": 9.0,
+          "hour_sin": 0.8660254037844387
+        }
+      }
+    ],
+    "supported_train_only_interaction_evidence": [],
+    "limitations": "Model contributions, not causal proof. Correlated groups share attribution. Synthetic training labels."
+  }
+}
